@@ -1,0 +1,12 @@
+{
+  "name": "stacks-api-types",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "generate": "openapi-typescript ../../backend/openapi.json -o ../../mobile/types/api.generated.ts"
+  },
+  "devDependencies": {
+    "openapi-typescript": "7.13.0",
+    "typescript": "~5.9.3"
+  }
+}

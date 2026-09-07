@@ -1,0 +1,37 @@
+{
+  "name": "stacks-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "ios": "expo start --ios",
+    "android": "expo start --android",
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit",
+    "api:generate": "npm --prefix ../tooling/api-types run generate",
+    "format": "prettier --write App.tsx index.ts app components hooks services theme",
+    "format:check": "prettier --check App.tsx index.ts app components hooks services theme"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~57.0.15",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "expo": "~57.0.20",
+    "expo-camera": "~57.0.4",
+    "expo-crypto": "~57.0.2",
+    "expo-haptics": "~57.0.2",
+    "expo-secure-store": "~57.0.3",
+    "expo-status-bar": "~57.0.1",
+    "expo-system-ui": "~57.0.3",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-web": "^0.21.2"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.2",
+    "typescript": "~6.0.3",
+    "prettier": "~3.8.3"
+  }
+}

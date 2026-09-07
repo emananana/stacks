@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Stacks",
+    "slug": "stacks",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.stacks.archive"
+    },
+    "backgroundColor": "#141716",
+    "plugins": [
+      "expo-secure-store"
+    ]
+  }
+}
