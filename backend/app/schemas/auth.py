@@ -8,12 +8,16 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field, SecretStr, field_va
 class Credentials(BaseModel):
     model_config = ConfigDict(extra="forbid")
     email: EmailStr
-    password: SecretStr = Field(min_length=12, max_length=128)
+    password: SecretStr = Field(max_length=128)
 
     @field_validator("email")
     @classmethod
     def normalize_email(cls, value: str) -> str:
         return value.strip().lower()
+
+
+class RegistrationCredentials(Credentials):
+    password: SecretStr = Field(min_length=12, max_length=128)
 
 
 class UserResponse(BaseModel):

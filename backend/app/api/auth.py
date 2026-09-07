@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, Request, Response
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.core.errors import AppError
-from app.schemas.auth import Credentials, SessionResponse, UserResponse
+from app.schemas.auth import Credentials, RegistrationCredentials, SessionResponse, UserResponse
 from app.services.auth import AuthService
 
 bearer = HTTPBearer(auto_error=False)
@@ -50,7 +50,9 @@ def limit_auth(request: Request):
     "/register", response_model=SessionResponse, status_code=201, dependencies=[Depends(limit_auth)]
 )
 async def register(
-    body: Credentials, response: Response, service: AuthService = Depends(get_auth_service)
+    body: RegistrationCredentials,
+    response: Response,
+    service: AuthService = Depends(get_auth_service),
 ):
     response.headers["Cache-Control"] = "no-store"
     return await service.register(body)

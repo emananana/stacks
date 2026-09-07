@@ -10,7 +10,7 @@ from starlette.concurrency import run_in_threadpool
 
 from app.core.errors import AppError
 from app.models.accounts import AuthSession, User
-from app.schemas.auth import Credentials, SessionResponse, UserResponse
+from app.schemas.auth import Credentials, RegistrationCredentials, SessionResponse, UserResponse
 
 passwords = PasswordHash.recommended()
 dummy_hash = passwords.hash("dummy-password-never-used-for-login")
@@ -25,7 +25,7 @@ class AuthService:
         self.session = session
         self.lifetime_days = lifetime_days
 
-    async def register(self, credentials: Credentials) -> SessionResponse:
+    async def register(self, credentials: RegistrationCredentials) -> SessionResponse:
         hashed = await run_in_threadpool(passwords.hash, credentials.password.get_secret_value())
         user = User(email=str(credentials.email), password_hash=hashed)
         self.session.add(user)
