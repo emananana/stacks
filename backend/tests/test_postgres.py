@@ -250,6 +250,9 @@ async def test_create_copy_http_persists_after_new_app_instance(sessions):
                 conflict.status_code == 409 and conflict.json()["error"]["code"] == "duplicate_copy"
             )
     other_app = create_app(Settings(database_url=URL))
+    other_app.dependency_overrides[current_user] = lambda: UserResponse(
+        id=LEGACY_USER_ID, email="legacy@stacks.local"
+    )
     async with other_app.router.lifespan_context(other_app):
         async with httpx.AsyncClient(
             transport=httpx.ASGITransport(app=other_app), base_url="http://test"
