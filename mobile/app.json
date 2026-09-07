@@ -6,12 +6,18 @@
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.emanabu.stacks",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Stacks uses the camera to scan ISBN barcodes on your books."
+      }
     },
     "android": {
       "package": "com.stacks.archive"
     },
     "backgroundColor": "#141716",
+    "scheme": "stacks",
     "plugins": [
       "expo-secure-store"
     ]

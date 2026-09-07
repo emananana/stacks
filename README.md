@@ -162,3 +162,20 @@ npm run typecheck
 9. Inspect PostgreSQL after lookups: editions/authors may exist; `library_copies` stays empty.
 
 Book-not-found, timeout, malformed upstream data, and throttling behavior are covered deterministically in tests; a random ISBN is not a reliable way to provoke provider absence.
+
+## Installable iPhone build
+
+The mobile app is configured for EAS with the iOS bundle identifier
+`com.emanabu.stacks`. Expo Go remains the fastest development loop; an
+installable build uses the EAS preview profile:
+
+```sh
+cd mobile
+npx eas login
+npx eas build:configure
+npx eas build --platform ios --profile preview
+```
+
+EAS provides a QR code or install link when the build finishes. The preview
+profile is intended for personal-device testing. App Store submission uses the
+production profile and requires Apple Developer credentials.
