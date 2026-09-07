@@ -18,6 +18,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
+from app.models.accounts import LEGACY_USER_ID
 
 
 class BookEdition(Base):
@@ -89,7 +90,7 @@ class LibraryCopy(Base):
     # One UUID per future add-copy operation: retries cannot create another physical copy.
     acquisition_key: Mapped[uuid.UUID] = mapped_column(Uuid)
     user_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id", ondelete="RESTRICT"), index=True
+        ForeignKey("users.id", ondelete="RESTRICT"), index=True, default=LEGACY_USER_ID
     )
     creation_fingerprint: Mapped[str | None] = mapped_column(String(64))
     reading_status: Mapped[str] = mapped_column(String(10), server_default="unread")

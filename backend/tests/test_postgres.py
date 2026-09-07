@@ -11,10 +11,13 @@ from sqlalchemy import func, select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
+from app.api.auth import current_user
 from app.core.config import Settings
 from app.main import create_app
 from app.models import Author, BookEdition, LibraryCopy
+from app.models.accounts import LEGACY_USER_ID
 from app.repositories.books import PostgresEditionRepository
+from app.schemas.auth import UserResponse
 from app.schemas.books import AuthorMetadata, EditionMetadata
 
 URL = os.getenv("TEST_DATABASE_URL")
@@ -110,6 +113,9 @@ async def test_http_to_provider_to_postgres_then_cache(sessions):
         )
 
     app = create_app(Settings(database_url=URL))
+    app.dependency_overrides[current_user] = lambda: UserResponse(
+        id=LEGACY_USER_ID, email="legacy@stacks.local"
+    )
     async with app.router.lifespan_context(app):
         async with httpx.AsyncClient(
             transport=httpx.MockTransport(upstream), base_url="https://openlibrary.org"
@@ -226,6 +232,9 @@ async def test_create_copy_http_persists_after_new_app_instance(sessions):
         "notes": "My own book",
     }
     app = create_app(Settings(database_url=URL))
+    app.dependency_overrides[current_user] = lambda: UserResponse(
+        id=LEGACY_USER_ID, email="legacy@stacks.local"
+    )
     async with app.router.lifespan_context(app):
         async with httpx.AsyncClient(
             transport=httpx.ASGITransport(app=app), base_url="http://test"
