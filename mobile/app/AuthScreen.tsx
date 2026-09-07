@@ -28,6 +28,10 @@ export default function AuthScreen({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   async function submit() {
+    if (mode === "register" && password.length < 12) {
+      setError("Use at least 12 characters for your password.");
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
