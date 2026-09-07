@@ -2,7 +2,7 @@
 
 A personal catalog for the physical books you keep. React Native + Expo + TypeScript, backed by FastAPI, SQLAlchemy, PostgreSQL, and Open Library.
 
-**Milestone 2A:** manually enter an ISBN, review edition metadata, save a physical copy with personal details, and view saved copies in the catalog. Editing/deleting, camera scanning, and advanced library sorting remain deferred.
+**Current:** ISBN lookup, physical-copy management, camera scanning, private accounts, appearance preferences, and the library catalog are implemented.
 
 Read [architecture and schema](docs/architecture.md) for boundaries, design decisions, the duplicate-copy policy, and the five-milestone plan. See [verification](docs/verification.md) for what was actually checked.
 
@@ -55,6 +55,17 @@ uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 On Windows use `.venv\Scripts\activate`. Commands assume you run the API and Alembic from `backend/`, where `.env` is loaded. `requirements.lock` contains the tested dependency versions, including development tools. To intentionally update dependencies, install `pip install -e '.[dev]'`, run checks, and regenerate the lock. The lock is a tested version snapshot, not a cross-platform hash lock.
 
 The Compose credentials are local development defaults. If using your own database, set `DATABASE_URL` to `postgresql+psycopg://USER:PASSWORD@HOST:5432/DATABASE`. Replace `OPEN_LIBRARY_USER_AGENT` with your app name and contact for regular use. Schema changes require Alembic; startup does not create tables.
+
+## Accounts and existing books
+
+Create an account on the mobile app with a password of at least 12 characters. Passwords are hashed with Argon2 and the session token is stored in the device secure keychain. Existing local copies remain under a quarantined legacy owner while accounts are introduced. After creating your account, transfer those copies once:
+
+```sh
+cd backend
+.venv/bin/python -m app.claim_library your-email@example.com
+```
+
+The command requires an existing account and only transfers copies belonging to the legacy owner.
 
 Check [API docs](http://localhost:8000/docs), [liveness](http://localhost:8000/health), and [database readiness](http://localhost:8000/health/ready). Readiness returns 503 until PostgreSQL is reachable and the initial migration is applied.
 
