@@ -65,7 +65,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** List Copies */
+        get: operations["list_copies_library_copies_get"];
         put?: never;
         /** Create Copy */
         post: operations["create_copy_library_copies_post"];
@@ -86,6 +87,76 @@ export interface paths {
         get: operations["get_copy_library_copies__copy_id__get"];
         put?: never;
         post?: never;
+        /** Delete Copy */
+        delete: operations["delete_copy_library_copies__copy_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Copy */
+        patch: operations["update_copy_library_copies__copy_id__patch"];
+        trace?: never;
+    };
+    "/auth/register": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Register */
+        post: operations["register_auth_register_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Login */
+        post: operations["login_auth_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Me */
+        get: operations["me_auth_me_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Logout */
+        post: operations["logout_auth_logout_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -140,6 +211,23 @@ export interface components {
              */
             fetched_at: string;
         };
+        /** CopyDetails */
+        CopyDetails: {
+            /**
+             * Reading Status
+             * @default unread
+             * @enum {string}
+             */
+            reading_status: "unread" | "reading" | "read";
+            /** Rating */
+            rating?: number | null;
+            /** Shelf */
+            shelf?: string | null;
+            /** Date Acquired */
+            date_acquired?: string | null;
+            /** Notes */
+            notes?: string | null;
+        };
         /** CreateCopyRequest */
         CreateCopyRequest: {
             /**
@@ -172,6 +260,19 @@ export interface components {
              */
             allow_duplicate: boolean;
         };
+        /** Credentials */
+        Credentials: {
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
+            /**
+             * Password
+             * Format: password
+             */
+            password: string;
+        };
         /** ErrorDetail */
         ErrorDetail: {
             /** Code */
@@ -183,6 +284,11 @@ export interface components {
         ErrorResponse: {
             error: components["schemas"]["ErrorDetail"];
         };
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
         /** HealthResponse */
         HealthResponse: {
             /**
@@ -191,6 +297,56 @@ export interface components {
              * @constant
              */
             status: "ok";
+        };
+        /** LibraryCopyListItem */
+        LibraryCopyListItem: {
+            /**
+             * Reading Status
+             * @default unread
+             * @enum {string}
+             */
+            reading_status: "unread" | "reading" | "read";
+            /** Rating */
+            rating?: number | null;
+            /** Shelf */
+            shelf?: string | null;
+            /** Date Acquired */
+            date_acquired?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Book Edition Id
+             * Format: uuid
+             */
+            book_edition_id: string;
+            /**
+             * Acquisition Key
+             * Format: uuid
+             */
+            acquisition_key: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /** Title */
+            title: string;
+            /** Authors */
+            authors?: string[];
+            /** Cover Url */
+            cover_url?: string | null;
+            /** Isbn13 */
+            isbn13: string;
         };
         /** LibraryCopyResponse */
         LibraryCopyResponse: {
@@ -234,6 +390,21 @@ export interface components {
              */
             updated_at: string;
         };
+        /** LibraryResponse */
+        LibraryResponse: {
+            /** Items */
+            items: components["schemas"]["LibraryCopyListItem"][];
+            /** Total */
+            total: number;
+            /** Books Owned */
+            books_owned: number;
+            /** Books Read */
+            books_read: number;
+            /** Currently Reading */
+            currently_reading: number;
+            /** Unread */
+            unread: number;
+        };
         /** LookupResponse */
         LookupResponse: {
             book: components["schemas"]["BookEditionResponse"];
@@ -242,6 +413,59 @@ export interface components {
              * @enum {string}
              */
             source: "cache" | "provider";
+        };
+        /** RegistrationCredentials */
+        RegistrationCredentials: {
+            /**
+             * Email
+             * Format: email
+             */
+            email: string;
+            /**
+             * Password
+             * Format: password
+             */
+            password: string;
+        };
+        /** SessionResponse */
+        SessionResponse: {
+            /** Access Token */
+            access_token: string;
+            /**
+             * Token Type
+             * @default bearer
+             * @constant
+             */
+            token_type: "bearer";
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
+            user: components["schemas"]["UserResponse"];
+        };
+        /** UserResponse */
+        UserResponse: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Email */
+            email: string;
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
         };
     };
     responses: never;
@@ -368,6 +592,39 @@ export interface operations {
             };
         };
     };
+    list_copies_library_copies_get: {
+        parameters: {
+            query?: {
+                query?: string | null;
+                status?: string | null;
+                sort?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LibraryResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_copy_library_copies_post: {
         parameters: {
             query?: never;
@@ -483,6 +740,210 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["ErrorResponse"];
                 };
+            };
+        };
+    };
+    delete_copy_library_copies__copy_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                copy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    update_copy_library_copies__copy_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                copy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CopyDetails"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LibraryCopyResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    register_auth_register_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RegistrationCredentials"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    login_auth_login_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Credentials"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    me_auth_me_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserResponse"];
+                };
+            };
+        };
+    };
+    logout_auth_logout_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
